@@ -7,6 +7,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
 	"sync"
 )
@@ -17,6 +18,11 @@ var configMap map[string]string
 
 func init() {
 	configMap = make(map[string]string)
+	if os.Getenv("dbpath") != "" {
+		configMap["dbpath"] = os.Getenv("dbpath")
+	} else {
+		configMap["dbpath"] = "./bolt.db"
+	}
 	configMap["title"] = "amd.im"
 	configMap["length"] = "5"
 }
@@ -97,7 +103,7 @@ func main() {
 
 	var err error
 
-	db, err = bolt.Open("data/bolt.db", 0666, nil)
+	db, err = bolt.Open(Config("dbpath"), 0600, nil)
 	if err != nil {
 		log.Fatal(err)
 	}

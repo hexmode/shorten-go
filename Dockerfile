@@ -8,6 +8,8 @@ COPY . .
 
 RUN go get -d -v ./...
 
+ENV dbpath /data/bolt.db
+
 RUN go build -o shorten-go .
 
 CMD ["./shorten-go"]
