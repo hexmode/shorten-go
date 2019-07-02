@@ -4,6 +4,10 @@
     </head>
     <body>
         <h1>New Short URL</h1>
-        {{.New}}
+        <form method="POST" action="/new">
+            <label>URL:</label><input type="text" name="URL" value="" autofocus />
+            <Label>Key:</label><input type="text" name="key" value="{{.New}}" />
+            <input type="submit" value="Create" />
+        </form>
     </body>
 </html>

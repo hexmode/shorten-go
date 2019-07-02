@@ -3,12 +3,15 @@ package main
 import (
 	"fmt"
 	"github.com/gorilla/mux"
+	bolt "go.etcd.io/bbolt"
 	"html/template"
 	"log"
 	"net/http"
 	"strconv"
 	"sync"
 )
+
+var db *bolt.DB
 
 var configMap map[string]string
 
@@ -36,6 +39,24 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "GET amd.im")
 }
 
+func NewPostHandler(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()
+	var rec Record
+	rec.Key = r.Form.Get("key")
+	rec.Type = "URL"
+	rec.URL = r.Form.Get("URL")
+
+	err := saveRecord(rec)
+	if err != nil {
+		log.Print("Could not save record", rec.Key, err)
+		w.WriteHeader(http.StatusInternalServerError)
+		fmt.Fprintf(w, "FAILED\nPOST amd.im/new\n", r.Form)
+	}
+
+	w.WriteHeader(http.StatusOK)
+	fmt.Fprintf(w, "POST amd.im/new\n", r.Form)
+}
+
 func NewHandler(w http.ResponseWriter, r *http.Request) {
 
 	length, err := strconv.Atoi(Config("length"))
@@ -61,14 +82,31 @@ func NewHandler(w http.ResponseWriter, r *http.Request) {
 
 func Redirector(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	w.WriteHeader(http.StatusOK)
-	fmt.Fprintf(w, "GET amd.im/%v", vars["short"])
+
+	rec, err := getKey(vars["key"])
+	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		fmt.Fprintf(w, "GET amd.im/key %v", vars["key"])
+		return
+	}
+
+	http.Redirect(w, r, rec.URL, http.StatusFound)
 }
 
 func main() {
+
+	var err error
+
+	db, err = bolt.Open("data/bolt.db", 0666, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+
 	r := mux.NewRouter()
-	r.HandleFunc("/{short}", Redirector).Methods("GET")
-	r.HandleFunc("/new", NewHandler).Methods("POST")
+	r.HandleFunc("/new", NewPostHandler).Methods("POST")
+	r.HandleFunc("/new", NewHandler).Methods("GET")
+	r.HandleFunc("/{key}", Redirector).Methods("GET")
 	r.HandleFunc("/", HomeHandler)
 	http.Handle("/", r)
 
