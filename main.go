@@ -48,7 +48,15 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 func NewPostHandler(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 	var rec Record
-	rec.Key = r.Form.Get("key")
+	if r.Form.Get("key") != "" {
+		rec.Key = r.Form.Get("key")
+	} else {
+		length, err := strconv.Atoi(Config("length"))
+		if err != nil {
+			log.Print(err)
+		}
+		rec.Key = generateKey(length)
+	}
 	rec.Type = "URL"
 	rec.URL = r.Form.Get("URL")
 
@@ -60,14 +68,14 @@ func NewPostHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusOK)
-	fmt.Fprintf(w, "POST amd.im/new\n", r.Form)
+	fmt.Fprintf(w, "POST amd.im/new\n", rec.Key, rec.URL)
 }
 
 func NewHandler(w http.ResponseWriter, r *http.Request) {
 
 	length, err := strconv.Atoi(Config("length"))
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 	}
 
 	newVars := PageVars{
