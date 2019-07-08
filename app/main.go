@@ -83,7 +83,7 @@ func NewHandler(w http.ResponseWriter, r *http.Request) {
 		New:   generateKey(length),
 	}
 
-	t, err := template.ParseFiles("new.html")
+	t, err := template.ParseFiles("templates/new.html")
 	if err != nil {
 		log.Fatal(err)
 	}
