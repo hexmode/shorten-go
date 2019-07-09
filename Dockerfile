@@ -14,12 +14,12 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o shorten-go .
 
 FROM scratch
 
-COPY --from=builder /go/src/github.com/amdavidson/shorten-go/shorten-go /bin/shorten-go
-
-ADD templates ./templates
-
 VOLUME /data
 
 ENV dbpath /data/bolt.db
+
+COPY --from=builder /go/src/github.com/amdavidson/shorten-go/shorten-go /bin/shorten-go
+
+ADD templates ./templates
 
 CMD ["/bin/shorten-go"]
