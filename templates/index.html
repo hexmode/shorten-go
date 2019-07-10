@@ -1,9 +1,17 @@
 <html>
     <head>
-        <title>amd.im</title>
+        <title>{{.Title}}</title>
+        <link rel="stylesheet" type="text/css" href="/static/style.css" />
     </head>
     <body>
-        amd.im
+        <div class="wrapper">
+            <img class="logo" src="/static/logo.png" />
+            <form method="POST" action="/new">
+                <input type="text" name="URL" size=40 value="URL" autofocus /><br/>
+                <Label>Key:</label><input type="text" name="key" size=7 value="{{.New}}" /><br/>
+                <input type="submit" value="Create" />
+            </form>
+        </div>
     </body>
 </html>
 

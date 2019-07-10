@@ -1,13 +1,13 @@
 <html>
     <head>
         <title>{{.Title}}</title>
+        <link rel="stylesheet" type="text/css" href="/static/style.css" />
     </head>
     <body>
-        <h1>New Short URL</h1>
-        <form method="POST" action="/new">
-            <label>URL:</label><input type="text" name="URL" value="" autofocus />
-            <Label>Key:</label><input type="text" name="key" value="{{.New}}" />
-            <input type="submit" value="Create" />
-        </form>
+        <div class="wrapper">
+            <img class="logo" src="/static/logo.png" />
+            <p>URL: {{.URL}}</p>
+            <p>Short URL: <a href="http://{{.Domain}}/{{.Key}}">{{.Domain}}/{{.Key}}</a></p>
+        </div>
     </body>
 </html>

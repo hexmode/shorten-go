@@ -22,4 +22,6 @@ COPY --from=builder /go/src/github.com/amdavidson/shorten-go/shorten-go /bin/sho
 
 ADD templates ./templates
 
+ADD static ./static
+
 CMD ["/bin/shorten-go"]

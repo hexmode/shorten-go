@@ -13,6 +13,7 @@ type Record struct {
 	URL  string
 }
 
+// generateKey generates a key of specified length from a predefined list of characters
 func generateKey(size int) string {
 	chars := "abcdefghijkmnopqrstuvwxyz23456789ABCDEFGHJKMNPQRSTUVWXYZ"
 

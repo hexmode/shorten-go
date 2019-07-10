@@ -24,6 +24,7 @@ func init() {
 		configMap["dbpath"] = "./bolt.db"
 	}
 	configMap["title"] = "amd.im"
+	configMap["domain"] = "amd.im"
 	configMap["length"] = "5"
 }
 
@@ -36,13 +37,22 @@ func Config(name string) string {
 }
 
 type PageVars struct {
-	Title string
-	New   string
+	Title  string
+	New    string
+	Domain string
+	Key    string
+	URL    string
 }
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
+	length, err := strconv.Atoi(Config("length"))
+	if err != nil {
+		log.Print(err)
+	}
+
 	newVars := PageVars{
 		Title: Config("title"),
+		New:   generateKey(length),
 	}
 
 	t, err := template.ParseFiles("templates/index.html")
@@ -80,20 +90,11 @@ func NewPostHandler(w http.ResponseWriter, r *http.Request) {
 
 	log.Printf("Created %v pointing to %v", rec.Key, rec.URL)
 
-	w.WriteHeader(http.StatusOK)
-	fmt.Fprintf(w, "POST amd.im/new\n", rec.Key, rec.URL)
-}
-
-func NewHandler(w http.ResponseWriter, r *http.Request) {
-
-	length, err := strconv.Atoi(Config("length"))
-	if err != nil {
-		log.Print(err)
-	}
-
 	newVars := PageVars{
-		Title: "New Short URL | " + Config("title"),
-		New:   generateKey(length),
+		Title:  Config("title"),
+		Domain: Config("domain"),
+		Key:    rec.Key,
+		URL:    rec.URL,
 	}
 
 	t, err := template.ParseFiles("templates/new.html")
@@ -105,6 +106,7 @@ func NewHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatal(err)
 	}
+
 }
 
 func Redirector(w http.ResponseWriter, r *http.Request) {
@@ -136,7 +138,6 @@ func main() {
 
 	r := mux.NewRouter()
 	r.HandleFunc("/new", NewPostHandler).Methods("POST")
-	r.HandleFunc("/new", NewHandler).Methods("GET")
 	r.HandleFunc("/static/{file}", StaticHandler).Methods("GET")
 	r.HandleFunc("/{key}", Redirector).Methods("GET")
 	r.HandleFunc("/", HomeHandler)
