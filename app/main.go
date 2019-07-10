@@ -78,6 +78,8 @@ func NewPostHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "FAILED\nPOST amd.im/new\n", r.Form)
 	}
 
+	log.Printf("Created %v pointing to %v", rec.Key, rec.URL)
+
 	w.WriteHeader(http.StatusOK)
 	fmt.Fprintf(w, "POST amd.im/new\n", rec.Key, rec.URL)
 }
@@ -111,11 +113,15 @@ func Redirector(w http.ResponseWriter, r *http.Request) {
 	rec, err := getKey(vars["key"])
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
-		fmt.Fprintf(w, "GET amd.im/key %v", vars["key"])
+		fmt.Fprintf(w, "404 GET amd.im/key %v", vars["key"])
 		return
 	}
-
+	log.Printf("Redirecting %v to %v", vars["key"], rec.URL)
 	http.Redirect(w, r, rec.URL, http.StatusFound)
+}
+
+func StaticHandler(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, r.URL.Path[1:])
 }
 
 func main() {
@@ -131,6 +137,7 @@ func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/new", NewPostHandler).Methods("POST")
 	r.HandleFunc("/new", NewHandler).Methods("GET")
+	r.HandleFunc("/static/{file}", StaticHandler).Methods("GET")
 	r.HandleFunc("/{key}", Redirector).Methods("GET")
 	r.HandleFunc("/", HomeHandler)
 	http.Handle("/", r)
