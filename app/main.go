@@ -41,8 +41,19 @@ type PageVars struct {
 }
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusOK)
-	fmt.Fprintf(w, "GET amd.im")
+	newVars := PageVars{
+		Title: Config("title"),
+	}
+
+	t, err := template.ParseFiles("templates/index.html")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = t.Execute(w, newVars)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 func NewPostHandler(w http.ResponseWriter, r *http.Request) {
