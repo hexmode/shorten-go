@@ -23,8 +23,8 @@ func init() {
 	} else {
 		configMap["dbpath"] = "./bolt.db"
 	}
-	configMap["title"] = "amd.im"
-	configMap["domain"] = "amd.im"
+	configMap["title"] = "hexm.de"
+	configMap["domain"] = "hexm.de"
 	configMap["length"] = "5"
 }
 
