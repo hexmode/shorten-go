@@ -1,12 +1,17 @@
+@font-face {
+    font-family: "Go";
+    src: url(Go-Medium.woff2) format("woff2");
+}
+
 body {
     padding-top: 20px;
-    font-family: Helvetica, Arial, sans-serif;
+    font-family: Go, sans-serif;
     font-size: 1.5em;
 }
 
 input {
     font-size: 1.2em;
-    font-family: Helvetica, Arial, sans-serif;
+    font-family: Go, sans-serif;
     text-align: center;
 }
 
