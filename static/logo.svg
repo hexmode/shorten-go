@@ -6,14 +6,12 @@
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="210mm"
-   height="297mm"
-   viewBox="0 0 210 297"
+   height="50mm"
+   viewBox="0 0 210 50"
    version="1.1"
    id="svg56"
-   sodipodi:docname="drawing-1.svg"
-   inkscape:version="1.0.2 (e86c870879, 2021-01-15)">
+   sodipodi:docname="logo.svg">
   <defs
      id="defs50" />
   <sodipodi:namedview
@@ -21,20 +19,7 @@
      pagecolor="#ffffff"
      bordercolor="#666666"
      borderopacity="1.0"
-     inkscape:pageopacity="0.0"
-     inkscape:pageshadow="2"
-     inkscape:zoom="1.979899"
-     inkscape:cx="803.57635"
-     inkscape:cy="460.32834"
-     inkscape:document-units="mm"
-     inkscape:current-layer="layer1"
-     inkscape:document-rotation="0"
-     showgrid="false"
-     inkscape:window-width="3840"
-     inkscape:window-height="2081"
-     inkscape:window-x="0"
-     inkscape:window-y="41"
-     inkscape:window-maximized="1" />
+     showgrid="false"/>
   <metadata
      id="metadata53">
     <rdf:RDF>
@@ -46,13 +31,10 @@
       </cc:Work>
     </rdf:RDF>
   </metadata>
-  <g
-     inkscape:label="Layer 1"
-     inkscape:groupmode="layer"
-     id="layer1">
+  <g id="layer1">
     <text
        xml:space="preserve"
-       style="font-size:176.389px;line-height:1.25;font-family:Go;-inkscape-font-specification:'Go, Normal';letter-spacing:0px;word-spacing:0px;fill:#d35f5f;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;"
+       style="font-size:176.389px;line-height:1.25;font-family:Go;letter-spacing:0px;word-spacing:0px;fill:#d35f5f;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;"
        x="19.377041"
        y="29.800558"
        id="text82"><tspan
